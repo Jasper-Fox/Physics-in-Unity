@@ -59,6 +59,7 @@ public class Explosion : MonoBehaviour
             Force.z = 1 / coordinates.z;
             _rigidbody = VARIABLE.GetComponent<Rigidbody>();
             _rigidbody.AddForce(Force*StrenghtMult*Strenght, ForceMode.Impulse);
+            gameObject.SetActive(false);
             _timer = -1;
         }
     }
