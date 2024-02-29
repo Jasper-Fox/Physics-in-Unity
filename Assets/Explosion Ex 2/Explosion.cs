@@ -21,33 +21,45 @@ public class Explosion : MonoBehaviour
     private void Awake()
     {
         actives = GameObject.FindGameObjectsWithTag("Activ");
+        Debug.Log("Press Space to plant a bomb!");
     }
+    
 
-    private void Start()
+    void Update()
     {
-        Debug.Log("Bomb has been planted");
-    }
-
-    void FixedUpdate()
-    {
-        if ((int)_timer == 0)
+        if (Input.GetKeyDown(KeyCode.Space) || _timer < TimeBeforeExplosion + 1)
         {
-            Debug.Log("BAAAAAH!!!");
-            foreach (GameObject VARIABLE in actives)
+            Countdown();
+            if ((int)_timer == 0)
             {
-                coordinates = VARIABLE.transform.position - transform.position;
-                Force.x = 1 / coordinates.x;
-                Force.y = 1 / coordinates.y;
-                Force.z = 1 / coordinates.z;
-                _rigidbody = VARIABLE.GetComponent<Rigidbody>();
-                _rigidbody.AddForce(Force*StrenghtMult*Strenght, ForceMode.Impulse);
-                _timer = -1;
-            }
+                Explo();
+            }  
         }
+    }
+
+    
+    public void Countdown()
+    {
         if (_timer > 1)
         {
+            Debug.Log("Bomb has been planted");
             _timer -= Time.deltaTime;
             Debug.Log((int)_timer);
+        }  
+    }
+    
+    public void Explo()
+    {
+        Debug.Log("BAAAAAH!!!");
+        foreach (GameObject VARIABLE in actives)
+        {
+            coordinates = VARIABLE.transform.position - transform.position;
+            Force.x = 1 / coordinates.x;
+            Force.y = 1 / coordinates.y;
+            Force.z = 1 / coordinates.z;
+            _rigidbody = VARIABLE.GetComponent<Rigidbody>();
+            _rigidbody.AddForce(Force*StrenghtMult*Strenght, ForceMode.Impulse);
+            _timer = -1;
         }
     }
 }
